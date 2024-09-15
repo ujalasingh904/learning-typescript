@@ -96,13 +96,34 @@ let personName: unknown; // type is unknown
 
 // </div>
 
+import { useState } from "react";
 import "./App.css"
 import Inputfield from "./components/Inputfield";
+import { Todo } from "./model";
+import TodoList from "./components/TodoList";
+
+
 const App: React.FC = () => {
+  const [todo, setTodo] = useState<string>("");
+  const [todos, setTodos] = useState<Todo[]>([])
+
+  const handleAdd = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (todo) {
+      setTodos([...todos, { id: todos.length + 1, todo, isDone: false }]);
+      setTodo("");
+    }
+  }
+
+
+
+  console.log(todos)
+
   return (
     <div className="App">
       <span className="heading">TASKIFY</span>
-      <Inputfield />
+      <Inputfield todo={todo} setTodo={setTodo} handleAdd={handleAdd} />
+      <TodoList todos={todos} setTodos={setTodos}/>
     </div>
   )
 }
